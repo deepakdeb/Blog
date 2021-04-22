@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block title_block %} Home {% endblock %}
+{% block body_block %}
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:20px">    
+  <!-- The Grid -->
+  <div class="w3-row">
+    <div class="w3-col m3">
+      <!-- Profile -->
+      {% if user.is_authenticated %}
+
+      <div class="w3-card w3-round w3-white">
+        <div class="w3-container">
+         <h4 class="w3-center">My Profile</h4>
+         <p class="w3-center"><img src="/media/{{user.user_profile.profile_pic}}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <hr>
+         <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> Designer, UI</p>
+         <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK</p>
+         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> April 1, 1988</p>
+        </div>
+      </div>
+      <br>
+      
+      <!-- Accordion -->
+      <div class="w3-card w3-round">
+        <div class="w3-white">
+          <a href="{% url 'Login:profile' %}" style="text-decoration: none;"<button  class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Profile</button></a>          
+          <a href="{% url 'Blog:my_blogs' %}" style="text-decoration: none;"<button  class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> My Blogs</button></a>
+          <a href= "{% url 'Blog:create_blog' %}" style="text-decoration: none;"<button  class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> Write Blog</button></a>
+        </div>      
+      </div>
+      <br>
+      {% endif %}
+    
+    <!-- End Left Column -->
+    </div>
+    
+      
+    <!-- Middle Column -->
+    <div class="w3-col m7">
+    
+      {% for blog in blogs %}
+
+      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+        <img src="/media/{{blog.author.user_profile.profile_pic}}" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+        <span class="w3-right w3-opacity">{{blog.publish_date}}</span>
+        <h4>{{blog.author}}</h4><br>
+        <hr class="w3-clear">
+        <h3>{{blog.blog_title}}</h3>
+        <p>{{blog.blog_content|range_filter|linebreaks}} <a href="{% url 'Blog:blog_details' slug=blog.slug %}">Read More</a></p>
+          <div class="w3-row-padding" style="margin:0 -16px">
+            <div class="w3-half">
+              <img src="/media/{{blog.blog_image}}" style="width:100%" alt="Northern Lights" class="w3-margin-bottom">
+            </div>
+        </div>
+        <h6>{{blog.liked_blog.count}} Likes | {{blog.blog_comment.count }} Comments </h6>
+        </div>
+
+
+      {% endfor %}      
+    <!-- End Middle Column -->
+    </div>
+    
+    <!-- Right Column -->
+    <div class="w3-col m2">
+            
+      <div class="w3-card w3-round w3-white w3-padding-16 w3-center">
+        <p>ADS</p>
+      </div>
+      <br>
+      
+      <div class="w3-card w3-round w3-white w3-padding-32 w3-center">
+        <p><i class="fa fa-bug w3-xxlarge"></i></p>
+      </div>
+      
+    <!-- End Right Column -->
+    </div>
+    
+  <!-- End Grid -->
+  </div>
+
+
+
+{% endblock %}
